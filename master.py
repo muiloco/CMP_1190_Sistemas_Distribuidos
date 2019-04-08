@@ -1,6 +1,19 @@
 import socket
 import hashlib
 
+
+lista = []
+
+def clienteJaExiste(parametro):
+    x = parametro
+    for x in lista:
+        return False
+    return True
+
+def incluirCliente(cliente):
+    lista.append(cliente)
+    return
+
 HOST = ''
 PORT = 5000
 udp = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
@@ -20,7 +33,9 @@ senha = hashlib.md5(senha.encode()).hexdigest()
 #------Procurar por consexoes-----------
 flag = True
 while flag:
-    if n_clients < qnt_clientes:
-        client = udp.recvfrom(1024)
+    msg ,client = udp.recvfrom(1024)
+    if clienteJaExiste(client):
         print(client, "-conectou")
+        incluirCliente(client)
         n_clients+=1
+udp.close()
