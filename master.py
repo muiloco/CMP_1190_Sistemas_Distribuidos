@@ -12,13 +12,13 @@ def clienteJaExiste(parametro):
 
 def incluirCliente(cliente):
     lista.append(cliente)
-    return
 
 HOST = ''
 PORT = 5000
-udp = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+tcp = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 origem = (HOST, PORT)
-udp.bind(origem)
+tcp.bind(origem)
+tcp.listen(1)
 
 #-----Input de config de numero de maquinas------
 qnt_clientes = input("Insira a quantidade de clintes a serem usado:\n")
@@ -33,9 +33,14 @@ senha = hashlib.md5(senha.encode()).hexdigest()
 #------Procurar por consexoes-----------
 flag = True
 while flag:
-    msg ,client = udp.recvfrom(1024)
-    if clienteJaExiste(client):
-        print(client, "-conectou")
-        incluirCliente(client)
-        n_clients+=1
-udp.close()
+    con ,client = tcp.accept()
+    print(client, "-conectou")
+    while True:
+        msg = con.recv(1024)
+        if not msg: break
+        print(client, msg)
+        if clienteJaExiste(client):
+            incluirCliente(client)
+            n_clients+=1
+    print ('Finalizando conexao do cliente', client)
+    con.close()
