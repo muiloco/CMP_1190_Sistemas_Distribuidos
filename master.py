@@ -18,7 +18,6 @@ PORT = 5000
 tcp = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 origem = (HOST, PORT)
 tcp.bind(origem)
-tcp.listen(1)
 
 #-----Input de config de numero de maquinas------
 qnt_clientes = input("Insira a quantidade de clintes a serem usado:\n")
