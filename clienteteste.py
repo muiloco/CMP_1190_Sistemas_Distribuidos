@@ -14,6 +14,8 @@ servidor.connect((host, port))
 print("Para sair digite: Exit")
 msg = input()
 while msg != 'Exit':
+    m, server = servidor.recv(1024)
+    print(server,str(m, 'utf-8'))
     servidor.send(msg.encode('utf-8'))
     msg = input()
 servidor.close()

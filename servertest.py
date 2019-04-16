@@ -6,7 +6,7 @@ Created on Mon Apr 15 00:51:41 2019
 """
 
 import socket
-import _thread               # Import socket module
+import _thread
 
 listaDeCliente = []
 
@@ -21,9 +21,9 @@ class Clientes:
     def imprimir(self):
         print("Cliente:", self.ipcliente)
 
-def conexao(con, cliente, qnt_clientes):
+def conexao(con, cliente):
     print("Conectado:", cliente) 
-    while True:     # Now wait for client connection.
+    while True:
         msg = con.recv(1024)
         if not msg: break
         print(msg, cliente)
@@ -43,12 +43,10 @@ def imprimirListaCliente():
         x+=1
 
 
-s = socket.socket()         # Create a socket object
-host = socket.gethostname() # Get local machine name
-port = 12345                # Reserve a port for your service.
-s.bind((host, port))        # Bind to the port
-msg = 'Thank you for connecting'
-
+s = socket.socket()
+host = socket.gethostname()
+port = 12345
+s.bind((host, port))
 s.listen(1)
 
 qnt_clientes = input("Insira a quantidade de clintes a serem usado:\n")
@@ -61,7 +59,7 @@ while True:
         cli = Clientes(con,cliente,True)
         ListaDeClientes(cli)
         n+=1
-        _thread.start_new_thread(conexao, tuple([con, cliente, qnt_clientes]))
+        _thread.start_new_thread(conexao, tuple([con, cliente]))
     elif n==qnt_clientes:
         imprimirListaCliente()
         n+=1
