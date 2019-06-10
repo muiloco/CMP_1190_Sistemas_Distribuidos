@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Apr 15 00:51:41 2019
+
+@author: Fernando R
+"""
+
 import socket
 import _thread
 import queue
@@ -48,7 +55,7 @@ def imprimirListaCliente():
         cliente.imprimir()
         x+=1
 
-def dadosServico(senha):
+def dadosServico():
     servico = filaDeServico.get()
     emAndamento.put(servico)
     inicio, fim = servico.retornarRange()
@@ -75,13 +82,13 @@ def gerarFilaDeServicos(qnt_senha):
 
 def conexao(con, cliente, senha):
     print("Conectado:", cliente)
-    dados = dadosServico(senha)
+    dados = dadosServico()
     con.send(dados.encode('utf-8'))
     while True:
         resposta = con.recv(1024)
         re = resposta.split(';')
         if re[0] == 'Servico Completo':
-            dados = dadosServico(senha)
+            dados = dadosServico()
             con.send(dados.encode('utf-8'))
         elif re[0] == 'Achou':
             print('Sua senha é: ', re[1])
