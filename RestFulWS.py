@@ -17,13 +17,23 @@ tasks = [
     }
 ]
 
-def procurar(task):
+def procurarInconsAlt(task):
     for index in range(len(tasks)):
         dict1 = tasks[index]
         if task[0]['id'] != dict1['id']:
             if task[0]['data'] == dict1['data']:
                 return True
             elif task[0]['duracao'] == dict1['duracao']:
+                return True
+    return False
+
+def procurarInconsCriar(task):
+    for index in range(len(tasks)):
+        dict1 = tasks[index]
+        if task['id'] != dict1['id']:
+            if task['data'] == dict1['data']:
+                return True
+            elif task['duracao'] == dict1['duracao']:
                 return True
     return False
 
@@ -48,6 +58,8 @@ def create_task():
         'data': request.json.get('data', ""),
         'duracao': request.json.get('duracao', "")
     }
+    if procurarInconsCriar(task):
+        abort(401)
     tasks.append(task)
     return jsonify({'task': task}), 201
 
@@ -68,7 +80,7 @@ def update_task(task_id):
     task[0]['data'] = request.json.get('data', task[0]['data'])
     task[0]['duracao'] = request.json.get('duracao', task[0]['duracao'])
     if procurar(task):
-        abort(400)
+        abort(401)
     return jsonify({'task': task[0]})
 
 @app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['DELETE'])
